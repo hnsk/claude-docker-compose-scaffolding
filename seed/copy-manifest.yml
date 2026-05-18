@@ -1,0 +1,77 @@
+# Component registry for the bootstrap / introduce skills.
+# Each component lists repo-relative files (a path ending in `/` means the
+# whole subtree) and its component deps. Skills resolve deps transitively
+# and copy the union into the target project.
+schema_version: 1
+
+components:
+  core:                 # always installed
+    description: >-
+      devctl CLI (capture, show-tree), venv bootstrap, project config,
+      tracking docs. The irreducible base.
+    files:
+      - tools/cli/
+      - tools/scripts/_bootstrap.sh
+      - tools/scripts/capture
+      - tools/scripts/show-tree
+      - tools/devctl.toml
+      - setup.sh
+      - pyproject.toml
+      - requirements.txt
+      - .gitignore
+      - .claude/settings.json
+      - CLAUDE.md
+      - TODO.md
+      - NEXT.md
+    deps: []
+
+  compose:
+    description: >-
+      Base docker-compose stack + dev image + compose/run/logs/ps wrappers
+      and their skills.
+    files:
+      - tools/docker-compose.yml
+      - tools/docker/
+      - tools/scripts/compose
+      - tools/scripts/run
+      - tools/scripts/logs
+      - tools/scripts/ps
+      - .claude/skills/dc-up/
+      - .claude/skills/dc-down/
+      - .claude/skills/dc-run/
+      - .claude/skills/dc-logs/
+      - .claude/skills/dc-ps/
+    deps: [core]
+
+  tests:                # always installed (testing is mandatory)
+    description: >-
+      Testing conventions (TESTING.md) + the generic `devctl test`
+      runner, its shim, and the dc-test skill. Tagging / parallel-safety
+      / long-lived test-DB policy is stack-agnostic in the seed and
+      adopted to the concrete stack at bootstrap.
+    files:
+      - TESTING.md
+      - tools/cli/devctl/commands/test.py
+      - tools/scripts/test
+      - .claude/skills/dc-test/
+    deps: [compose]
+
+  shell:
+    description: Interactive shell into a running service container.
+    files:
+      - tools/scripts/shell
+      - .claude/skills/dc-shell/
+    deps: [compose]
+
+  clean:
+    description: Wipe declared scratch dirs ([clean].targets) safely.
+    files:
+      - tools/scripts/clean
+      - .claude/skills/dc-clean/
+    deps: [core]
+
+  diag:
+    description: Ad-hoc diagnostics through capture (re-readable logs).
+    files:
+      - .claude/skills/dc-diag/
+    deps: [core]

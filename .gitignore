@@ -1,0 +1,10 @@
+# This repo's own ignores (NOT the seed — that ships seed/.gitignore).
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+
+# Editor swap/scratch
+*.swp
+*.swo
+*~

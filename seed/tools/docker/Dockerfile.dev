@@ -1,0 +1,31 @@
+# Generic dev/test image. Language-agnostic base: shell, build tools,
+# networking + debugging utils. Add your language runtime (pin the
+# LATEST STABLE version — verify from the official source / Docker Hub
+# tags; do not default to a training-memory version) below the marker.
+#
+# `debian:stable-slim` is itself a moving alias that always resolves to
+# the current stable Debian release, so the base stays current without a
+# memory-pinned tag. For reproducible builds, replace it with a digest.
+FROM debian:stable-slim
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+        ca-certificates \
+        curl \
+        git \
+        gdb \
+        netcat-openbsd \
+        pkg-config \
+    && rm -rf /var/lib/apt/lists/*
+
+# --- add project language runtime(s) here, pinned to latest stable ---
+# e.g. (verify current latest first):
+#   RUN curl -fsSL https://deb.nodesource.com/setup_<LATEST>.x | bash - \
+#       && apt-get install -y nodejs
+#   COPY --from=python:3.<LATEST>-slim ...
+# ---------------------------------------------------------------------
+
+WORKDIR /work
+CMD ["sleep", "infinity"]
