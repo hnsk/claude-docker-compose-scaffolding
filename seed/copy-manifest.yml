@@ -7,13 +7,14 @@ schema_version: 1
 components:
   core:                 # always installed
     description: >-
-      devctl CLI (capture, show-tree), venv bootstrap, project config,
+      devctl CLI (capture, show-tree, peek), venv bootstrap, project config,
       tracking docs. The irreducible base.
     files:
       - tools/cli/
       - tools/scripts/_bootstrap.sh
       - tools/scripts/capture
       - tools/scripts/show-tree
+      - tools/scripts/peek
       - tools/devctl.toml
       - setup.sh
       - pyproject.toml

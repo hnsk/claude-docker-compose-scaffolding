@@ -22,6 +22,9 @@ is standalone and never re-clones this repo.
     --parallel`) in the long-lived `test`-profile service.
   - `show-tree` — dump a dir's files with banners (refuses paths outside
     the repo, skips binaries) instead of `find | xargs cat`.
+  - `peek` — read-only partial view of one file (`--lines A:B`,
+    `--head/--tail N`, `--match REGEX [--context N]`, `-n`) instead of
+    raw `sed -n`/`head`/`tail`/`grep`; stdout only, repo-root-confined.
   - `clean` — wipe declared scratch dirs, bounded + captured.
   - Config via `tools/devctl.toml` (service names, test command, clean
     targets) — no CLI code edits per project. Zero third-party runtime
@@ -175,7 +178,7 @@ CLAUDE.md                guide for working IN this scaffold repo
 
 | Component | Adds | Deps |
 |-----------|------|------|
-| `core`    | devctl (capture, show-tree), venv bootstrap, config, tracking docs, allowlist | — |
+| `core`    | devctl (capture, show-tree, peek), venv bootstrap, config, tracking docs, allowlist | — |
 | `compose` | base compose stack + dev image + compose/run/logs/ps + skills | core |
 | `tests`   | TESTING.md + `devctl test` runner + dc-test skill | compose |
 | `shell`   | interactive shell command + skill | compose |

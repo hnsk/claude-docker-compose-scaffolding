@@ -28,6 +28,11 @@ owns and may freely mutate its copy.
 - **Don't dump trees with `find | xargs cat`** — use
   `tools/scripts/show-tree <path>` (refuses paths outside the repo,
   skips binaries).
+- **Peek into one file with `tools/scripts/peek`**, not raw
+  `sed -n`/`head`/`tail`/`grep` (those trip the permission classifier or
+  tempt a `tmp/` scratch file): `peek <file> --lines 1:40`,
+  `--head N`, `--tail N`, `--match REGEX [--context N]`, `-n` for line
+  numbers. Read-only, stdout only, repo-root-confined.
 - **All code has tests; tagged from day one** (speed tier + area) for
   selective + parallel runs. Test DB is a long-lived service reset by
   TRUNCATE/rollback, never a per-run container restart. See `TESTING.md`.
